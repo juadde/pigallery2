@@ -40,7 +40,7 @@ jobs:
         container: [alpine]
         include:
           - container: alpine
-            platforms: linux/arm/v7,linux/arm/v6
+            platforms: linux/arm/v6,linux/arm/v7
 
     steps:
       - name: Checkout
