@@ -1,7 +1,7 @@
 #-----------------BUILDER-----------------
 #-----------------------------------------
-FROM node:18-alpine3.20 AS builder
-RUN apk add --no-cache --repository https://alpine.global.ssl.fastly.net/alpine/v3.20/community/ \
+FROM node:alpine AS builder
+RUN apk add --no-cache \
   python3 build-base sqlite-dev sqlite-libs imagemagick-dev libraw-dev vips-dev vips-heif vips-magick fftw-dev gcc g++ make libc6-compat && ln -snf /usr/bin/python3 /usr/bin/python && \
   rm -f /var/cache/apk/*
 COPY pigallery2-release /app
@@ -15,10 +15,10 @@ RUN mkdir -p /app/data/config && \
 
 #-----------------MAIN--------------------
 #-----------------------------------------
-FROM node:18-alpine3.20 AS main
+FROM node:alpine AS main
 WORKDIR /app
 ENV NODE_ENV=production \
-    # overrides only the default value of the settings (the actualy value can be overwritten through config.json)
+    # overrides only the default value of the settings (the actual value can be overwritten through config.json)
     default-Database-dbFolder=/app/data/db \
     default-Media-folder=/app/data/images \
     default-Media-tempFolder=/app/data/tmp \
@@ -27,7 +27,7 @@ ENV NODE_ENV=production \
     PI_DOCKER=true
 
 EXPOSE 80
-RUN apk add --no-cache --repository https://alpine.global.ssl.fastly.net/alpine/v3.20/community/ \
+RUN apk add --no-cache \
     vips vips-cpp vips-heif vips-magick ffmpeg && \
     rm -f /var/cache/apk/*
 COPY --from=builder /app /app
