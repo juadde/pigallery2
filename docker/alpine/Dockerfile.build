@@ -3,7 +3,7 @@
 FROM node:18-alpine3.20 AS builder
 RUN apk add --no-cache --repository https://alpine.global.ssl.fastly.net/alpine/v3.20/community/ \
   python3 build-base sqlite-dev sqlite-libs imagemagick-dev libraw-dev vips-dev vips-heif vips-magick fftw-dev gcc g++ make libc6-compat && ln -snf /usr/bin/python3 /usr/bin/python && \
-  rm /var/cache/apk/*
+  rm -f /var/cache/apk/*
 COPY pigallery2-release /app
 WORKDIR /app
 RUN npm install --unsafe-perm  --fetch-timeout=90000
